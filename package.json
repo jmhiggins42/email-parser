@@ -1,6 +1,6 @@
 {
   "name": "email-parser",
-  "version": "1.0.0",
+  "version": "0.8.0",
   "description": "A function that takes in an html email template with variables and returns text/html versions of the completed email.",
   "main": "index.js",
   "scripts": {
@@ -13,7 +13,7 @@
     "fs"
   ],
   "author": "John Higgins",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "colors": "^1.3.0",
     "htmlparser2": "^3.9.2"
