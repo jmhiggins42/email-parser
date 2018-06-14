@@ -1,0 +1,21 @@
+{
+  "name": "email-parser",
+  "version": "1.0.0",
+  "description": "A function that takes in an html email template with variables and returns text/html versions of the completed email.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "email",
+    "parser",
+    "htmlparser2",
+    "fs"
+  ],
+  "author": "John Higgins",
+  "license": "ISC",
+  "dependencies": {
+    "colors": "^1.3.0",
+    "htmlparser2": "^3.9.2"
+  }
+}
