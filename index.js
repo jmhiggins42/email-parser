@@ -1,6 +1,7 @@
+const emailReader = require('./reader');
 const emailParser = require('./parser');
 const readline = require('readline');
-const colors = require('colors');
+require('colors');
 
 if (process.argv.length !== 3) {
   console.error('Please provide an email to parse.');
@@ -11,55 +12,34 @@ const emailMap = {};
 
 const rl = readline.createInterface({
   input: process.stdin,
-  output: process.stdout,
-  prompt: '> '
+  output: process.stdout
 });
 
-function askProp() {
-  rl.question('Variable name: '.blue, mapProp => askValue(mapProp.trim()));
-}
+const askValue = propArr => {
+  // take next property in arry, ask for its value, and repeat if necessary
+  if (propArr.length) {
+    const mapProp = propArr.shift();
+    rl.question('Value of '.white + mapProp.green + ': '.white, mapValue => {
+      emailMap[mapProp] = mapValue.trim();
+      askValue(propArr);
+    });
+  }
+  // write/parse the email after finishing the emailMap
+  else {
+    emailParser(process.argv[2], emailMap);
+    console.log('Done!\n'.blue);
+    process.exit(0);
+  }
+};
 
-function askValue(mapProp) {
-  rl.question('Value: '.green, mapValue => {
-    emailMap[mapProp] = mapValue.trim();
-    askDone();
-  });
-}
+emailReader(process.argv[2], propArr => askValue(propArr));
 
-function askDone() {
-  rl.question('Done? (y): '.grey, answer => {
-    if (!answer || answer.trim().toLowerCase() === 'y') {
-      console.log(emailMap);
-      process.exit(0);
-    } else {
-      askProp();
-    }
-  });
-}
-
-function start() {
-  console.log(
-    [
-      '---------------------------------------',
-      'email-parser:',
-      'please enter a series of variable names',
-      'with their associated values',
-      '---------------------------------------'
-    ].join('\n').grey
-  );
-  askProp();
-}
-
-rl.on('line', cmd => {
-  exec(cmd.trim());
-}).on('close', () => {
+rl.on('close', () => {
   console.log('goodbye!'.green);
   process.exit(0);
 });
 
 process.on('uncaughtException', e => {
   console.log(e.stack.red);
-  rl.prompt();
+  process.exit(1);
 });
-
-start();
